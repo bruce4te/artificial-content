@@ -15,8 +15,8 @@ functions:
   image-recognition-hackathon:
     package:
       include:
-      - image-recognition/handler.py
-    handler: image-recognition.handler.lambda_handler
+      - image_recognition/handler.py
+    handler: image_recognition.handler.lambda_handler
     role: "arn:aws:iam::427052161823:role/image-recognition-hackathon"
     memorySize: 512
     description: "Analyze images using rekognition"

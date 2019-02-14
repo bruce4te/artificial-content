@@ -87,6 +87,41 @@ def poll_asset_url(asset_event: AssetCreateEvent, wait_seconds=3, max_retries=10
     raise Exception("Could not get asset url")
     
 
+def reindex_all(space_id, environment_id):
+    al_client = algoliasearch.Client(os.environ['ALGOLIA_APP'], os.environ['ALGOLIA_KEY'])
+    al_client.delete_index('art-assets')
+    client = Client(os.environ['CMA_TOKEN'])
+    assets = client.assets(space_id, environment_id).all()
+    index = al_client.init_index('art-assets')
+
+    for asset in assets:
+
+        if not asset.url():
+            print(f"Asset has no url, skipping: {asset}")
+            continue
+
+        url = f"https:{asset.url()}"
+        response = requests.get(url)
+        
+        if int(response.headers.get('Content-Length')) > 5242880:
+            print(f"Asset to large for rekognition: {asset}")
+            continue
+
+        labels = recognize_binary(response.content)
+
+        to_index = {
+            'space_id': space_id,
+            'Labels': labels['Labels'],
+            'url': "https:" + url,
+            'asset_id': asset.id,
+            'thumb_url': "https:" + url + "?w=100"
+        }
+
+        print(f"Indexing asset metadata for asset id {asset.id}")
+
+        index.add_object(to_index)
+
+
 
 def lambda_handler(event, context):
     try:
