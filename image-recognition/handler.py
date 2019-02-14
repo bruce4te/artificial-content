@@ -89,7 +89,16 @@ def lambda_handler(event, context):
 
         al_client = algoliasearch.Client(os.environ['ALGOLIA_APP'], os.environ['ALGOLIA_KEY'])
         index = al_client.init_index('art-assets')
-        index.add_object(labels)
+
+        to_index = {
+            'space_id': asset_event.space_id,
+            'Labels': labels['Labels'],
+            'url': "https:" + asset.url(),
+            'asset_id': asset_event.asset_id,
+            'thumb_url': "https:" + asset.url() + "?w=100"
+        }
+
+        index.add_object(to_index)
 
     except Exception as e:
         print(f"Failed to handle event {event}: {e}")
