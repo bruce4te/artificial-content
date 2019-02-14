@@ -112,9 +112,9 @@ def reindex_all(space_id, environment_id):
         to_index = {
             'space_id': space_id,
             'Labels': labels['Labels'],
-            'url': "https:" + url,
+            'url': url,
             'asset_id': asset.id,
-            'thumb_url': "https:" + url + "?w=100"
+            'thumb_url': url + "?w=100"
         }
 
         print(f"Indexing asset metadata for asset id {asset.id}")
