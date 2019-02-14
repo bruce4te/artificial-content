@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "contentful-ui-extensions-sdk": "^3.5.0",
+    "debounce-fn": "github:azer/debounce-fn"
+  }
+}

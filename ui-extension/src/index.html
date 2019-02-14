@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="//unpkg.com/react@16.6.3/umd/react.production.min.js"></script>
+    <script src="//unpkg.com/react-dom@16.6.3/umd/react-dom.production.min.js"></script>
+    <script src="//unpkg.com/@contentful/forma-36-react-components@2/dist/umd/forma-36-react-components.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearchLite.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="//unpkg.com/@contentful/forma-36-react-components@2/dist/styles.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//unpkg.com/@contentful/forma-36-fcss/dist/styles.css"
+    />
+    <script type="text/javascript" src="./index.jsx"></script>
+    <style type="text/css">
+      .x-container {
+        position: relative;
+      }
+
+      .x-icon {
+        position: absolute;
+        top: 20px;
+        left: 10px;
+        z-index: 999999;
+      }
+
+      .x-textfield input {
+        padding-left: 35px;
+      }
+
+      .x-results {
+        margin-top: 20px;
+      }
+
+      .x-cards {
+        display: grid;
+        height: 149px;
+        grid-template-columns: repeat(999, 149px);
+        grid-row-gap: 20px;
+        grid-column-gap: 10px;
+        margin-top: 20px;
+      }
+
+      .x-card {
+        cursor: pointer;
+      }
+
+      .x-img {
+        width: 100%;
+        height: 100%;
+        background: #fff center center;
+        background-size: cover;
+      }
+
+      .x-create {
+        width: 149px;
+        height: 149px;
+        cursor: pointer;
+        position: relative;
+        border: 1px dashed #ccc;
+      }
+
+      .x-create > button {
+        position: absolute;
+        top: calc(50% - 18px);
+        left: calc(50% - 18px);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
