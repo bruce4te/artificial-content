@@ -85,7 +85,19 @@ def poll_asset_url(asset_event: AssetCreateEvent, wait_seconds=3, max_retries=20
         sleep(wait_seconds)
         
     raise Exception("Could not get asset url")
-    
+
+
+def index_asset(index, asset_id, space_id, asset_url, labels):
+    to_index = {
+        'objectID': ''.join([space_id, asset_id]),
+        'space_id': space_id,
+        'Labels': labels['Labels'],
+        'url': asset_url,
+        'asset_id': asset_id,
+        'thumb_url': asset_url + "?w=100"
+    }
+
+    index.add_object(to_index)
 
 def reindex_all(space_id, environment_id):
     al_client = algoliasearch.Client(os.environ['ALGOLIA_APP'], os.environ['ALGOLIA_KEY'])
@@ -109,18 +121,11 @@ def reindex_all(space_id, environment_id):
 
         labels = recognize_binary(response.content)
 
-        to_index = {
-            'objectID': ''.join([space_id, asset.id]),
-            'space_id': space_id,
-            'Labels': labels['Labels'],
-            'url': url,
-            'asset_id': asset.id,
-            'thumb_url': url + "?w=100"
-        }
+        index_asset(
+            index, asset.id, space_id, url, labels,
+        )
 
-        print(f"Indexing asset metadata for asset id {asset.id}")
-
-        index.add_object(to_index)
+        print(f"Indexed asset metadata for asset id {asset.id}")
 
 
 
@@ -142,16 +147,9 @@ def lambda_handler(event, context):
         al_client = algoliasearch.Client(os.environ['ALGOLIA_APP'], os.environ['ALGOLIA_KEY'])
         index = al_client.init_index('art-assets')
 
-        to_index = {
-            'objectID': ''.join([asset_event.space_id, asset_event.asset_id]),
-            'space_id': asset_event.space_id,
-            'Labels': labels['Labels'],
-            'url': url,
-            'asset_id': asset_event.asset_id,
-            'thumb_url': url + "?w=100"
-        }
-
-        index.add_object(to_index)
+        index_asset(
+            index, asset_event.asset_id, asset_event.space_id, url, labels,
+        )
 
     except Exception as e:
         print(f"Failed to handle event {event}: {e}")
