@@ -64,7 +64,7 @@ def recognize_binary(bin_content) -> dict:
             'Bytes': bin_content,
         },
         MaxLabels=10,
-        MinConfidence=0,
+        MinConfidence=80.0,
     )
 
     return response
