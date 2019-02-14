@@ -1,0 +1,58 @@
+{
+"asset_id":"1EpR6FCDWvIB8MsY2UEnkN",
+"space_id":"qc6kbklzr3ku",
+"Labels": [
+        {
+            "Confidence": 98.6959457397461,
+            "Name": "Water"
+        },
+        {
+            "Confidence": 97.89031219482422,
+            "Name": "Outdoors"
+        },
+        {
+            "Confidence": 96.27144622802734,
+            "Name": "Nature"
+        },
+        {
+            "Confidence": 95.07695770263672,
+            "Name": "Architecture"
+        },
+        {
+            "Confidence": 95.07695770263672,
+            "Name": "Building"
+        },
+        {
+            "Confidence": 94.13434600830078,
+            "Name": "Castle"
+        },
+        {
+            "Confidence": 89.86540985107422,
+            "Name": "Fort"
+        },
+        {
+            "Confidence": 86.58057403564453,
+            "Name": "Moat"
+        },
+        {
+            "Confidence": 76.85342407226562,
+            "Name": "Bird"
+        },
+        {
+            "Confidence": 76.85342407226562,
+            "Name": "Animal"
+        },
+        {
+            "Confidence": 75.34449005126953,
+            "Name": "Lake"
+        },
+        {
+            "Confidence": 65.12581634521484,
+            "Name": "Waterfront"
+        },
+        {
+            "Confidence": 58.58890151977539,
+            "Name": "Canal"
+        }
+    ]
+}
