@@ -70,19 +70,21 @@ def recognize_binary(bin_content) -> dict:
     return response
 
 
-def poll_asset_url(asset_event: AssetCreateEvent, wait_seconds=3) -> str:
+def poll_asset_url(asset_event: AssetCreateEvent, wait_seconds=3, max_retries=10) -> str:
     asset_url = None
     client = Client(os.environ['CMA_TOKEN'])
 
-    while not asset_url:
-        sleep(wait_seconds)
+    for i in range(max_retries):
+        print(f"Retrieving asset url: attempt {i}")
         asset = client.assets(asset_event.space_id, asset_event.environment_id).find(asset_event.asset_id)
         asset_url = asset.url()
+        if asset_url:
+            return f"http:{asset_url}"
+
+        print(f"No asset url available on attempt {i}")
+        sleep(wait_seconds)
         
-    if asset_url:
-        return f"http:{asset_url}"
-    else:
-        raise Exception("Could not get asset url")
+    raise Exception("Could not get asset url")
     
 
 
