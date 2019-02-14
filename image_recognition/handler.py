@@ -110,6 +110,7 @@ def reindex_all(space_id, environment_id):
         labels = recognize_binary(response.content)
 
         to_index = {
+            'objectID': ''.join([space_id, asset.id]),
             'space_id': space_id,
             'Labels': labels['Labels'],
             'url': url,
