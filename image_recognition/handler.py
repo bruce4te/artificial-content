@@ -144,9 +144,9 @@ def lambda_handler(event, context):
         to_index = {
             'space_id': asset_event.space_id,
             'Labels': labels['Labels'],
-            'url': "https:" + url,
+            'url': url,
             'asset_id': asset_event.asset_id,
-            'thumb_url': "https:" + url + "?w=100"
+            'thumb_url': url + "?w=100"
         }
 
         index.add_object(to_index)
