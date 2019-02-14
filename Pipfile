@@ -11,6 +11,7 @@ nose2 = "*"
 boto3 = "~=1.9.75"
 requests = "*"
 contentful = "*"
+contentful-management = "*"
 
 [requires]
 python_version = "3.7"
