@@ -143,7 +143,7 @@ def lambda_handler(event, context):
         index = al_client.init_index('art-assets')
 
         to_index = {
-            'objectID': ''.join([asset_event.space_id, asset.id]),
+            'objectID': ''.join([asset_event.space_id, asset_event.asset_id]),
             'space_id': asset_event.space_id,
             'Labels': labels['Labels'],
             'url': url,
