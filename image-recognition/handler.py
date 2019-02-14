@@ -5,6 +5,7 @@ from typing import NamedTuple
 from urllib.parse import unquote
 from contentful_management import Client
 import os
+from algoliasearch import algoliasearch
 
 class S3UploadEvent(NamedTuple):
     key: str
@@ -85,6 +86,10 @@ def lambda_handler(event, context):
 
         labels = recognize_binary(response.content)
         print(labels)
+
+        al_client = algoliasearch.Client(os.environ['ALGOLIA_APP'], os.environ['ALGOLIA_KEY'])
+        index = al_client.init_index('art-assets')
+        index.add_object(labels)
 
     except Exception as e:
         print(f"Failed to handle event {event}: {e}")
