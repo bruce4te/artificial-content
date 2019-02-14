@@ -3,7 +3,8 @@ import boto3
 import requests
 from typing import NamedTuple
 from urllib.parse import unquote
-
+from contentful_management import Client
+import os
 
 class S3UploadEvent(NamedTuple):
     key: str
@@ -52,14 +53,39 @@ def recognize_s3_object(event: S3UploadEvent) -> dict:
     )
 
     return response
-    
+
+
+def recognize_binary(bin_content) -> dict:
+    client = boto3.client('rekognition')
+    response = client.detect_labels(
+        Image={
+            'Bytes': bin_content,
+        },
+        MaxLabels=10,
+        MinConfidence=0,
+    )
+
+    return response
+
 
 def lambda_handler(event, context):
     try:
         asset_event = AssetCreateEvent.from_json(event)
         response = requests.get(asset_event.url())
         print(response)
+
+        client = Client(os.environ['CMA_TOKEN'])
+
+        asset = client.assets(asset_event.space_id, asset_event.environment_id).find(asset_event.asset_id)
+        url = asset.url()
+        print(url)
         
+        response = requests.get(f"http:{asset.url()}")
+        print(response)
+
+        labels = recognize_binary(response.content)
+        print(labels)
+
     except Exception as e:
         print(f"Failed to handle event {event}: {e}")
         
