@@ -23,7 +23,8 @@ functions:
     cloudwatchLog: "/aws/lambda/image-recognition-hackathon"
     environment:
       CMA_TOKEN: "${env:CMA_TOKEN}"
-      ALGOLIA_TOKEN: "${env:ALGOLIA_TOKEN}"
+      ALGOLIA_APP: "${env:ALGOLIA_APP}"
+      ALGOLIA_KEY: "${env:ALGOLIA_KEY}"
       
 custom:
   pythonRequirements:

@@ -5,6 +5,7 @@ from typing import NamedTuple
 from urllib.parse import unquote
 from contentful_management import Client
 import os
+from time import sleep
 from algoliasearch import algoliasearch
 
 class S3UploadEvent(NamedTuple):
@@ -69,19 +70,32 @@ def recognize_binary(bin_content) -> dict:
     return response
 
 
+def poll_asset_url(asset_event: AssetCreateEvent, wait_seconds=3) -> str:
+    asset_url = None
+    client = Client(os.environ['CMA_TOKEN'])
+
+    while not asset_url:
+        sleep(wait_seconds)
+        asset = client.assets(asset_event.space_id, asset_event.environment_id).find(asset_event.asset_id)
+        asset_url = asset.url()
+        
+    if asset_url:
+        return f"http:{asset_url}"
+    else:
+        raise Exception("Could not get asset url")
+    
+
+
 def lambda_handler(event, context):
     try:
         asset_event = AssetCreateEvent.from_json(event)
         response = requests.get(asset_event.url())
         print(response)
 
-        client = Client(os.environ['CMA_TOKEN'])
-
-        asset = client.assets(asset_event.space_id, asset_event.environment_id).find(asset_event.asset_id)
-        url = asset.url()
+        url = poll_asset_url(asset_event)
         print(url)
         
-        response = requests.get(f"http:{asset.url()}")
+        response = requests.get(url)
         print(response)
 
         labels = recognize_binary(response.content)
@@ -93,9 +107,9 @@ def lambda_handler(event, context):
         to_index = {
             'space_id': asset_event.space_id,
             'Labels': labels['Labels'],
-            'url': "https:" + asset.url(),
+            'url': "https:" + url,
             'asset_id': asset_event.asset_id,
-            'thumb_url': "https:" + asset.url() + "?w=100"
+            'thumb_url': "https:" + url + "?w=100"
         }
 
         index.add_object(to_index)
