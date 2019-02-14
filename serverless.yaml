@@ -21,7 +21,10 @@ functions:
     memorySize: 512
     description: "Analyze images using rekognition"
     cloudwatchLog: "/aws/lambda/image-recognition-hackathon"
-
+    environment:
+      CMA_TOKEN: "${env:CMA_TOKEN}"
+      ALGOLIA_TOKEN: "${env:ALGOLIA_TOKEN}"
+      
 custom:
   pythonRequirements:
     usePipenv: true
