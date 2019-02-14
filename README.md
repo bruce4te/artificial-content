@@ -7,4 +7,6 @@
 
 `pipenv install --dev`
 
+`export CMA_TOKEN=$TOKEN`
+
 `./run-local.sh`
