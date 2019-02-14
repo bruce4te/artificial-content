@@ -1,0 +1,54 @@
+{
+    "space_id": "qc6kbklzr3ku",
+    "asset_id": "1EpR6FCDWvIB8MsY2UEnkN",
+    "Labels": [
+        {
+            "Confidence": 99.86112213134766,
+            "Name": "Water"
+        },
+        {
+            "Confidence": 99.52910614013672,
+            "Name": "Waterfront"
+        },
+        {
+            "Confidence": 98.64500427246094,
+            "Name": "Port"
+        },
+        {
+            "Confidence": 98.64500427246094,
+            "Name": "Dock"
+        },
+        {
+            "Confidence": 98.64500427246094,
+            "Name": "Pier"
+        },
+        {
+            "Confidence": 87.441650390625,
+            "Name": "Transportation"
+        },
+        {
+            "Confidence": 87.441650390625,
+            "Name": "Vehicle"
+        },
+        {
+            "Confidence": 87.441650390625,
+            "Name": "Boat"
+        },
+        {
+            "Confidence": 59.46023941040039,
+            "Name": "Boardwalk"
+        },
+        {
+            "Confidence": 59.46023941040039,
+            "Name": "Bridge"
+        },
+        {
+            "Confidence": 59.46023941040039,
+            "Name": "Building"
+        },
+        {
+            "Confidence": 58.70874786376953,
+            "Name": "Outdoors"
+        }
+    ]
+}
