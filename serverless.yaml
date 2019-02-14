@@ -1,0 +1,34 @@
+service: image-recognition-hackathon
+
+provider:
+  name: aws
+  runtime: python3.7
+  timeout: 301
+  region: us-east-1
+  deploymentBucket:
+    name: "serverless-dev-serverlessdeploymentbucket-mxr9a74txlvw"
+
+package:
+  individually: true
+
+functions:
+  image-recognition-hackathon:
+    package:
+      include:
+      - image-recognition/handler.py
+    handler: image-recognition.handler.lambda_handler
+    role: "arn:aws:iam::427052161823:role/image-recognition-hackathon"
+    memorySize: 512
+    description: "Analyze images using rekognition"
+    cloudwatchLog: "/aws/lambda/image-recognition-hackathon"
+
+custom:
+  pythonRequirements:
+    usePipenv: true
+    dockerizePip: true
+    useDownloadCache: true
+    useStaticCache: true
+
+plugins:
+  - serverless-python-requirements
+  - serverless-dotenv-plugin
