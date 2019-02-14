@@ -1,6 +1,6 @@
 {
 "asset_id":"1EpR6FCDWvIB8MsY2UEnkN",
-"space_id":"qc6kbklzr3ku", 
+"space_id":"qc6kbklzr3ku",
 "Labels": [
         {
             "Confidence": 98.6959457397461,
@@ -55,3 +55,4 @@
             "Name": "Canal"
         }
     ]
+}
