@@ -1,0 +1,1 @@
+pipenv run sls invoke local -f image-recognition-hackathon -p test/event.json
