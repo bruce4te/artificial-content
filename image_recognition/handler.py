@@ -70,7 +70,7 @@ def recognize_binary(bin_content) -> dict:
     return response
 
 
-def poll_asset_url(asset_event: AssetCreateEvent, wait_seconds=3, max_retries=10) -> str:
+def poll_asset_url(asset_event: AssetCreateEvent, wait_seconds=3, max_retries=20) -> str:
     asset_url = None
     client = Client(os.environ['CMA_TOKEN'])
 
