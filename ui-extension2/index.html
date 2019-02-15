@@ -14,6 +14,11 @@
     <script src="//unpkg.com/react-dom@16.6.3/umd/react-dom.production.min.js"></script>
     <script src="//unpkg.com/create-react-class@15.6.3/create-react-class.min.js"></script>
     <script src="//unpkg.com/@contentful/forma-36-react-components@2/dist/umd/forma-36-react-components.production.min.js"></script>
+    <style type="text/css">
+    	.x-label {
+        margin: 0 5px 5px 0;
+      }
+    </style>
   </head>
 
   <body>
@@ -21,11 +26,9 @@
 
     <script type="text/javascript">
       var h = React.createElement;
-      var SelectField = Forma36.SelectField;
       var Pill = Forma36.Pill;
-      var TextInput = Forma36.TextInput;
       var TextField = Forma36.TextField;
-      var Option = Forma36.Option;
+      var Button = Forma36.Button;
       var Spinner = Forma36.Spinner;
 
       var App = createReactClass({
@@ -34,16 +37,34 @@
             error: false,
             hasLoaded: false,
             items: [],
-            value: this.props.api.entry.fields.tags2.getValue()
+            value: this.props.api.entry.fields.algoliaTags.getValue()
           };
         },
 
         componentDidMount: function() {
-          console.log(this.props.api.entry.fields.tags.getValue());
+          this.updateTags;
+          this.props.api.entry.fields.image.onValueChanged(this.updateTags);
+        },
+
+        onChange: function(event) {
+          //var value = this.event;
+          console.log(event);
+          //this.props.api.notifier.success(event);
+          //this.setState({ value: event });
+          //this.props.api.field.setValue(value);
+        },
+
+        componentDidUpdate: function(event) {
+					this.props.api.window.updateHeight();
+        },
+
+        updateTags: function(event) {
           var client = algoliasearch('M3O0LNMSYN', 'cfcd7c5604635049658f30bd3efc2fd6');
 					var index = client.initIndex('art-assets');
-
-          index.search({query: 'Water'})
+          var space_id = this.props.api.contentType.sys.space.sys.id + this.props.api.entry.fields.image._fieldLocales['en-US']._value.sys.id;
+          console.log(space_id);
+        	console.log(event);
+          index.search({query: space_id})
             .then(res => res.hits)
             .then(
               function(res) {
@@ -66,15 +87,6 @@
         		)
         },
 
-        onChange: function(event) {
-          console.log(this.props.api.entry.fields.tags2.getValue());
-          console.log(this.props.api.entry.fields.tags.getValue());
-          var value = this.event.value;
-          this.props.api.notifier.success(value);
-          this.setState({ value: value });
-          this.props.api.field.setValue(value);
-        },
-
         render: function() {
           return h(
             "div",
@@ -84,10 +96,10 @@
               h(
                 TextField,
                 {
-                  name: "names",
-                  id: "names",
-                  labelText: "Select name",
-                  helpText:  "Pick image",
+                  name: "Tags",
+                  id: "algoliaTags",
+                  labelText: "Add tags",
+                  helpText:  "Edit tags",
                   onChange: this.onChange,
                   value: ""
                 }
@@ -95,11 +107,10 @@
               this.state.items.map(function(item) {
                 return h(
                   Pill,
-                  { label: `${item} ` },
+                  { extraClassNames: "x-label", label: `${item} X`},
                   item + " "
                   );
                 })
-
           );
         }
       });
