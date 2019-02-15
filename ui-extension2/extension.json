@@ -1,0 +1,6 @@
+{
+  "id": "algolia-tagging",
+  "name": "Algolia Tagging",
+  "srcdoc": "./index.html",
+  "fieldTypes": ["Symbols", "Text"]
+}

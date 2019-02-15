@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>External API UI Extension Sample</title>
+    <link
+      rel="stylesheet"
+      href="//unpkg.com/@contentful/forma-36-react-components@2/dist/styles.css"
+    />
+    <script src="//unpkg.com/whatwg-fetch@3.0.0/dist/fetch.umd.js"></script>
+    <script src="//unpkg.com/contentful-ui-extensions-sdk@3"></script>
+    <script src="//unpkg.com/algoliasearch@3.32.0/dist/algoliasearch.min.js"></script>
+    <script src="//unpkg.com/react@16.6.3/umd/react.production.min.js"></script>
+    <script src="//unpkg.com/react-dom@16.6.3/umd/react-dom.production.min.js"></script>
+    <script src="//unpkg.com/create-react-class@15.6.3/create-react-class.min.js"></script>
+    <script src="//unpkg.com/@contentful/forma-36-react-components@2/dist/umd/forma-36-react-components.production.min.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script type="text/javascript">
+      var h = React.createElement;
+      var SelectField = Forma36.SelectField;
+      var Pill = Forma36.Pill;
+      var TextInput = Forma36.TextInput;
+      var TextField = Forma36.TextField;
+      var Option = Forma36.Option;
+      var Spinner = Forma36.Spinner;
+
+      var App = createReactClass({
+        getInitialState: function() {
+          return {
+            error: false,
+            hasLoaded: false,
+            items: [],
+            value: this.props.api.entry.fields.tags2.getValue()
+          };
+        },
+
+        componentDidMount: function() {
+          console.log(this.props.api.entry.fields.tags.getValue());
+          var client = algoliasearch('M3O0LNMSYN', 'cfcd7c5604635049658f30bd3efc2fd6');
+					var index = client.initIndex('art-assets');
+
+          index.search({query: 'Water'})
+            .then(res => res.hits)
+            .then(
+              function(res) {
+                let items = [];
+                res[0].Labels.map(function(lbl) {
+                	items.push(lbl.Name);
+                })
+                console.log(items);
+                this.setState({
+                  hasLoaded: true,
+                  items
+                });
+              }.bind(this),
+              function(err) {
+                this.setState({
+                  hasLoaded: true,
+                  error: error
+                });
+              }.bind(this)
+        		)
+        },
+
+        onChange: function(event) {
+          console.log(this.props.api.entry.fields.tags2.getValue());
+          console.log(this.props.api.entry.fields.tags.getValue());
+          var value = this.event.value;
+          this.props.api.notifier.success(value);
+          this.setState({ value: value });
+          this.props.api.field.setValue(value);
+        },
+
+        render: function() {
+          return h(
+            "div",
+            {},
+            !this.state.hasLoaded && h(Spinner),
+            this.state.hasLoaded &&
+              h(
+                TextField,
+                {
+                  name: "names",
+                  id: "names",
+                  labelText: "Select name",
+                  helpText:  "Pick image",
+                  onChange: this.onChange,
+                  value: ""
+                }
+              ),
+              this.state.items.map(function(item) {
+                return h(
+                  Pill,
+                  { label: `${item} ` },
+                  item + " "
+                  );
+                })
+
+          );
+        }
+      });
+
+      window.contentfulExtension.init(function(api) {
+        ReactDOM.render(h(App, { api: api }), document.getElementById("root"));
+      });
+    </script>
+  </body>
+</html>
