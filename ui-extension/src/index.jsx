@@ -77,6 +77,8 @@ class App extends React.Component {
       (err, content) => {
         if (err) return this.onError(err)
 
+        console.log("hits", content.hits)
+
         this.setState({ searching: false, results: content.hits })
       }
     )
@@ -248,6 +250,5 @@ init(extension => {
 
 function fixImageSize(url) {
   if (!url) return url
-  console.log(url, url.replace(/w=\d+/, "w=300"))
   return url.replace(/w=\d+/, "w=300")
 }
