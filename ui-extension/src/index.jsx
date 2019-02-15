@@ -85,7 +85,7 @@ class App extends React.Component {
   }
 
   shouldRenderSelected() {
-    return !this.state.query
+    return !this.state.query && this.state.selected
 
     /*return (
       !this.results() ||
