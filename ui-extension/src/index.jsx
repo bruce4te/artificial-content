@@ -83,10 +83,18 @@ class App extends React.Component {
   }
 
   shouldRenderSelected() {
-    return (
-      !this.state.results ||
-      !this.state.results.some(r => r.asset_id === this.state.selected.id)
-    )
+    return !this.state.query
+
+    /*return (
+      !this.results() ||
+      !this.results().some(r => r.asset_id === this.state.selected.id)
+    )*/
+  }
+
+  results() {
+    return this.state.results
+      ? this.state.results.slice(0, this.shouldRenderSelected() ? 3 : 4)
+      : []
   }
 
   onChange(event) {
@@ -162,6 +170,14 @@ class App extends React.Component {
             placeholder: "Search your images"
           }}
         />
+        {this.state.query ? (
+          <Forma36.Icon
+            icon="Close"
+            color="secondary"
+            extraClassNames="x-close-icon"
+            onClick={() => this.setState({ query: "" })}
+          />
+        ) : null}
         {this.renderResults()}
       </div>
     )
@@ -183,30 +199,40 @@ class App extends React.Component {
             <Forma36.Card selected extraClassNames="x-card">
               <div
                 className="x-img"
-                style={{ backgroundImage: `url(${this.state.selected.url})` }}
+                style={{
+                  backgroundImage: `url(${fixImageSize(
+                    this.state.selected.url
+                  )})`
+                }}
               />
             </Forma36.Card>
           ) : null}
-          {this.state.results &&
-            this.state.results
-              .slice(0, this.shouldRenderSelected() ? 3 : 4)
-              .map(result => (
-                <Forma36.Card
-                  selected={result.asset_id === this.state.selected.id}
-                  extraClassNames="x-card"
-                  onClick={() =>
-                    this.onSelect({
-                      id: result.asset_id,
-                      url: result.thumb_url
-                    })
-                  }
-                >
-                  <div
-                    className="x-img"
-                    style={{ backgroundImage: `url(${result.thumb_url})` }}
-                  />
-                </Forma36.Card>
-              ))}
+
+          {this.results()
+            .filter(
+              r =>
+                !this.shouldRenderSelected() ||
+                r.asset_id !== this.state.selected.id
+            )
+            .map(result => (
+              <Forma36.Card
+                selected={result.asset_id === this.state.selected.id}
+                extraClassNames="x-card"
+                onClick={() =>
+                  this.onSelect({
+                    id: result.asset_id,
+                    url: fixImageSize(result.thumb_url)
+                  })
+                }
+              >
+                <div
+                  className="x-img"
+                  style={{
+                    backgroundImage: `url(${fixImageSize(result.thumb_url)})`
+                  }}
+                />
+              </Forma36.Card>
+            ))}
         </section>
       </section>
     )
@@ -219,3 +245,9 @@ init(extension => {
     document.getElementById("root")
   )
 })
+
+function fixImageSize(url) {
+  if (!url) return url
+  console.log(url, url.replace(/w=\d+/, "w=300"))
+  return url.replace(/w=\d+/, "w=300")
+}

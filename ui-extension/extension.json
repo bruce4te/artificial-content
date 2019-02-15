@@ -2,6 +2,6 @@
 {
   "id": "custom-image-selector",
   "name": "Custom Image Selector",
-  "srcdoc": "./build/index.html",
+  "srcdoc": "./src/index.html",
   "fieldTypes": ["Asset"]
 }
