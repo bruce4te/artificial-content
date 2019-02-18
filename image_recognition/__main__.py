@@ -1,4 +1,4 @@
-from image_recognition.handler import reindex_all
+from image_recognition.handler import reindex_all, delete_objects
 
 if __name__== "__main__":
-    reindex_all("qc6kbklzr3ku", "master")
+    delete_objects()

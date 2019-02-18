@@ -40,6 +40,16 @@ class AssetCreateEvent(NamedTuple):
         return f"https://api.contentful.com/spaces/{self.space_id}/environments/{self.environment_id}/assets/{self.asset_id}"
 
 
+def get_asset_url(js):
+    f = js['fields'].get('file', None)
+    
+    if f:
+        return f['en-US']['url']
+    else:
+        print(js)
+        return None
+    
+
 def recognize_s3_object(event: S3UploadEvent) -> dict:
     client = boto3.client('rekognition')
     print(f"Starting recognition for object '{s3_event.to_object_uri()}'")
@@ -63,8 +73,8 @@ def recognize_binary(bin_content) -> dict:
         Image={
             'Bytes': bin_content,
         },
-        MaxLabels=10,
-        MinConfidence=80.0,
+        MaxLabels=20,
+        MinConfidence=70.0,
     )
 
     return response
@@ -99,20 +109,54 @@ def index_asset(index, asset_id, space_id, asset_url, labels):
 
     index.add_object(to_index)
 
+def all_assets(space_id: str, environment_id: str):
+    assets = []
+
+    def get_page(start: int):
+        resp = requests.get(
+            f"https://api.contentful.com/spaces/{space_id}/environments/{environment_id}/assets?skip={start}&access_token={os.environ['CMA_TOKEN']}"
+        )
+
+        data = resp.json()
+        next_start = start + 100
+        total = data.get('total')
+
+        for item in data.get('items'):
+            assets.append(
+                item
+            )
+
+        if next_start < total:
+            get_page(next_start)
+
+    get_page(0)
+    return assets
+
+
 def reindex_all(space_id, environment_id):
     al_client = algoliasearch.Client(os.environ['ALGOLIA_APP'], os.environ['ALGOLIA_KEY'])
-    al_client.delete_index('art-assets')
+    # al_client.delete_index('art-assets')
     client = Client(os.environ['CMA_TOKEN'])
-    assets = client.assets(space_id, environment_id).all()
+    assets = all_assets(space_id, environment_id)
     index = al_client.init_index('art-assets')
+    index.set_settings({
+        'minWordSizefor1Typo': 5,
+        'minWordSizefor2Typos': 10,
+        })
 
     for asset in assets:
+        asset_id = asset['sys']['id']
+        asset_url = get_asset_url(asset)
 
-        if not asset.url():
+        print(asset_id)
+        print(asset_url)
+
+        next
+        if not asset_url:
             print(f"Asset has no url, skipping: {asset}")
             continue
 
-        url = f"https:{asset.url()}"
+        url = f"https:{asset_url}"
         response = requests.get(url)
         
         if int(response.headers.get('Content-Length')) > 5242880:
@@ -122,10 +166,10 @@ def reindex_all(space_id, environment_id):
         labels = recognize_binary(response.content)
 
         index_asset(
-            index, asset.id, space_id, url, labels,
+            index, asset_id, space_id, url, labels,
         )
 
-        print(f"Indexed asset metadata for asset id {asset.id}")
+        print(f"Indexed asset metadata for asset id {asset_id}")
 
 
 
@@ -155,3 +199,10 @@ def lambda_handler(event, context):
         print(f"Failed to handle event {event}: {e}")
         
         raise e
+
+def delete_objects():
+    objects = ['qc6kbklzr3ku7ylT9Df729RAvqZFaMsfhR']
+
+    al_client = algoliasearch.Client(os.environ['ALGOLIA_APP'], os.environ['ALGOLIA_KEY'])
+    index = al_client.init_index('art-assets')
+    index.delete_objects(objects)
