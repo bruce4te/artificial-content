@@ -59,11 +59,11 @@
         },
 
         updateTags: function(event) {
-          var client = algoliasearch('M3O0LNMSYN', 'cfcd7c5604635049658f30bd3efc2fd6');
-					var index = client.initIndex('art-assets');
+          var client = algoliasearch(ALGOLIA_APP_KEY, ALGOLIA_READ_KEY);
+	  var index = client.initIndex('art-assets');
           var space_id = this.props.api.contentType.sys.space.sys.id + this.props.api.entry.fields.image._fieldLocales['en-US']._value.sys.id;
           console.log(space_id);
-        	console.log(event);
+          console.log(event);
           index.search({query: space_id})
             .then(res => res.hits)
             .then(
