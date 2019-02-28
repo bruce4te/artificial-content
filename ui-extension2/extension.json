@@ -2,5 +2,27 @@
   "id": "algolia-tagging",
   "name": "Algolia Tagging",
   "srcdoc": "./index.html",
-  "fieldTypes": ["Symbols", "Text"]
+  "fieldTypes": ["Symbols", "Text"],
+  "parameters": {
+    "installation": [
+      {
+        "id": "algolia-app-key",
+        "type": "token",
+        "name": "Algolia Application Key",
+        "default": "M3O0LNMSYN"
+      },
+      {
+        "id": "algolia-search-key",
+        "type": "token",
+        "name": "Algolia Search Key",
+        "default": "cfcd7c5604635049658f30bd3efc2fd6"
+      },
+      {
+        "id": "algolia-index",
+        "type": "String",
+        "name": "Algolia Index",
+        "default": "art-index"
+      }
+    ]
+  }
 }
