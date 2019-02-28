@@ -4,7 +4,7 @@
   "srcdoc": "./index.html",
   "fieldTypes": ["Symbols", "Text"],
   "parameters": {
-    "installation": [
+    "instance": [
       {
         "id": "algolia-app-key",
         "type": "token",
