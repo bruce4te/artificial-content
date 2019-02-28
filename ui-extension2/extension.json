@@ -21,7 +21,7 @@
         "id": "algoliaIndex",
         "type": "Symbol",
         "name": "Algolia Index",
-        "default": "art-index"
+        "default": "art-assets"
       }
     ]
   }
