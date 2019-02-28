@@ -6,19 +6,19 @@
   "parameters": {
     "instance": [
       {
-        "id": "algolia-app-key",
+        "id": "algoliaAppKey",
         "type": "token",
         "name": "Algolia Application Key",
         "default": "M3O0LNMSYN"
       },
       {
-        "id": "algolia-search-key",
+        "id": "algoliaSearchKey",
         "type": "token",
         "name": "Algolia Search Key",
         "default": "cfcd7c5604635049658f30bd3efc2fd6"
       },
       {
-        "id": "algolia-index",
+        "id": "algoliaIndex",
         "type": "String",
         "name": "Algolia Index",
         "default": "art-index"
