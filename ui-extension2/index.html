@@ -59,8 +59,8 @@
         },
 
         updateTags: function(event) {
-          var client = algoliasearch(api.parameters.installation.algolia-app-key, api.parameters.installation.algolia-search-key);
-	      var index = client.initIndex(api.parameters.installation.algolia-index);
+          var client = algoliasearch(api.parameters.installation.algoliaAppKey, api.parameters.installation.algoliaSearchKey);
+	      var index = client.initIndex(api.parameters.installation.algoliaIndex);
           var space_id = this.props.api.contentType.sys.space.sys.id + this.props.api.entry.fields.image._fieldLocales['en-US']._value.sys.id;
           console.log(space_id);
           console.log(event);
