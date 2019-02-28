@@ -8,6 +8,7 @@ import os
 from time import sleep
 from algoliasearch import algoliasearch
 
+
 class S3UploadEvent(NamedTuple):
     key: str
     bucket: str
@@ -109,6 +110,7 @@ def index_asset(index, asset_id, space_id, asset_url, labels):
 
     index.add_object(to_index)
 
+
 def all_assets(space_id: str, environment_id: str):
     assets = []
 
@@ -172,12 +174,13 @@ def reindex_all(space_id, environment_id):
         print(f"Indexed asset metadata for asset id {asset_id}")
 
 
-
 def lambda_handler(event, context):
     try:
         asset_event = AssetCreateEvent.from_json(event)
         response = requests.get(asset_event.url())
         print(response)
+
+        print("lambda_handler")
 
         url = poll_asset_url(asset_event)
         print(url)
@@ -191,6 +194,8 @@ def lambda_handler(event, context):
         al_client = algoliasearch.Client(os.environ['ALGOLIA_APP'], os.environ['ALGOLIA_KEY'])
         index = al_client.init_index('art-assets')
 
+        print(index, asset_event.asset_id, asset_event.space_id, url, labels)
+
         index_asset(
             index, asset_event.asset_id, asset_event.space_id, url, labels,
         )
@@ -199,6 +204,7 @@ def lambda_handler(event, context):
         print(f"Failed to handle event {event}: {e}")
         
         raise e
+
 
 def delete_objects():
     objects = ['qc6kbklzr3ku7ylT9Df729RAvqZFaMsfhR']

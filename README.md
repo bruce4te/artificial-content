@@ -9,4 +9,6 @@
 
 `export CMA_TOKEN=$TOKEN`
 
+`create .env file containing ALGOLIA_APP and ALGOLIA_KEY`
+
 `./run-local.sh`
