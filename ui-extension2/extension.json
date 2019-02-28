@@ -7,19 +7,19 @@
     "instance": [
       {
         "id": "algoliaAppKey",
-        "type": "token",
+        "type": "Symbol",
         "name": "Algolia Application Key",
         "default": "M3O0LNMSYN"
       },
       {
         "id": "algoliaSearchKey",
-        "type": "token",
+        "type": "Symbol",
         "name": "Algolia Search Key",
         "default": "cfcd7c5604635049658f30bd3efc2fd6"
       },
       {
         "id": "algoliaIndex",
-        "type": "String",
+        "type": "Symbol",
         "name": "Algolia Index",
         "default": "art-index"
       }
